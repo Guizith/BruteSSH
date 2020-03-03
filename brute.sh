@@ -13,11 +13,11 @@ VETORNUM=
 R=3
 
 #Usuario de ssh
-USRR='gui'
+USRR='admin'
 #Ip de ssh
-IPADD=10.0.1.22
+IPADD=
 #Porta de ssh
-PORTT=2222
+PORTT=22
 
 #Universo de simbolos a ser utilizados na senha
 UNIVERSO=
@@ -35,9 +35,9 @@ echo './brute.sh [options]'
 echo ''
 echo '~~Type:'
 echo '-h             This Help.'
-echo '-u             User.'
+echo '-u             User.(Default:admin).'
 echo '-i             Ip Address.'
-echo '-p             Acess Port (Default:22).'
+echo '-p             Access Port (Default:22).'
 echo '-a             [a-z].'
 echo '-A             [A-Z].'
 echo '-d             [0-9].'
