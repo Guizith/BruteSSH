@@ -21,6 +21,9 @@ IPADD=
 #Porta de ssh
 PORTT=22
 
+NMAP="NULL"
+WLIST="NULL"
+
 #Universo de simbolos a ser utilizados na senha
 UNIVERSO=
  
@@ -37,6 +40,8 @@ echo './brute.sh [options]'
 echo ''
 echo '~~Type:'
 echo '-h             This Help.'
+echo '-n             Network Mapping (Port Discovery)'
+echo '-w             Use Wordlists (Hydra).'
 echo '-u             User.(Default:admin).'
 echo '-i             Ip Address.'
 echo '-p             Access Port (Default:22).'
@@ -50,17 +55,23 @@ echo 'Developed by Gui,will,gustavo,vitor.'
 echo ' '
 exit 1
 }
+
+
+
  
 # Comando sem opcoes.
 [ "$1" ] || help_me
+
  
 
 #Tratamento de linha de comando.
-while getopts 'u:i:p:haAdc:r:' OPT
+while getopts 'w:n:u:i:p:haAdc:r:' OPT
 do
     
      case $OPT in
         "h") help_me; exit ;;
+	"w") WLIST=${OPTARG};;
+	"n") NMAP=${OPTARG};;
 	"u") USRR=${OPTARG};;
 	"i") IPADD=${OPTARG};;
 	"p") PORTT=${OPTARG};;
@@ -76,8 +87,33 @@ do
 done
 ps
 # Caso nao forneca nenhum simbolo
-[ -z "$UNIVERSO" ] && echo 'Sem simbolos a serem processados.' && exit 1
+#[ -z "$UNIVERSO" ] && echo 'Sem simbolos a serem processados.' && exit 1
  
+
+#USING NMAP FOR DISCOVERY ALL THE UP PORT'S
+
+#if [ -z $NMAP ]
+#if [ $NMAP  !=  "NULL" ]
+#if [ -n $NMAP ]
+if [ $NMAP == "yes" ]
+then
+    echo ' ======================= NMAP - NETWORKING MAPPING IS ACTIVATED ================== ' 
+    echo ' ======================= DESCOBRINDO PORTA ======================================= '
+    cd / 
+    sudo nmap -v -sV -sS $IPADD
+    exit 1 
+else 
+    echo '======================= TENTANDO CONEXÃO COM A PORTA PADRAO ====================='
+fi 
+ 
+# USING WORDLISTS 
+if [ $WLIST == "yes" ]
+then 
+    echo ' For Using Wordlists correctly, please navigate into the folder that contains a chooseds wordlists'
+    sudo hydra -L users.txt -P passwords.txt $IPADD ssh -s $PORTT -V
+    exit 1 
+fi
+
 # size
 N=${#UNIVERSO}
  
